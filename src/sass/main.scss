@@ -1,0 +1,38 @@
+.search-input {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  height: 40px;
+  font-size: 18px;
+}
+
+.country-item {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.info-container {
+  display: flex;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  & > div {
+    width: 50%;
+    padding-right: 40px;
+  }
+}
+
+.country-title {
+  font-size: 16px;
+  font-weight: 400;
+  & > span {
+    font-weight: 700;
+  }
+}
+
+.country-flag {
+  width: 50%;
+}
