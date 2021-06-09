@@ -3,6 +3,9 @@ import debounce from 'lodash.debounce';
 import { alert } from '@pnotify/core/dist/PNotify.js';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
+import CountryInfoMarkUp from './templates/country-info-markup.hbs';
+import ListItemMarksup from './templates/countries-list-marksup.hbs';
+import fetchCountries from './fetch-countries';
 
 const searchEl = document.querySelector('[data-attribut=search-area]');
 const countryListEl = document.querySelector('.country-list');
@@ -18,13 +21,7 @@ function onSearchCountries(event) {
     return;
   }
 
-  fetch(`https://restcountries.eu/rest/v2/name/${searchQuery}`)
-    .then(r => {
-      if (!r.ok) {
-        throw Error();
-      }
-      return r.json();
-    })
+  fetchCountries(searchQuery)
     .then(renderInfo)
     .catch(error => {
       alert({
@@ -36,33 +33,12 @@ function onSearchCountries(event) {
 }
 
 function createListItemMarksup(countries) {
-  return countries.map(({ name }) => {
-    return `
-    <li class="gallery__item">
-    ${name}
-    </li>
-    `;
-  });
-}
-
-function createCountryInfoMarkUp({ name, capital, population, languages, flag }) {
-  return `
-  <h1 class="country-item">${name}</h1>
-  <div class="info-container">
-  <div>
-  <p class="country-title"><span>Capital: </span>${capital}</p>
-  <p class="country-title"><span>Population: </span>${population}</p>
-  <p class="country-title"><span>Languages: </span></p>
-  <ul>${languages.map(({ name }) => `<li >${name}</li>`)}</ul>
-  </div>
-  <img class="country-flag"src='${flag}' alt='${name}'>
-  </div>
-  `;
+  return countries.map(ListItemMarksup);
 }
 
 function renderInfo(list) {
   if (list.length === 1) {
-    const listMarksUp = createCountryInfoMarkUp(list[0]);
+    const listMarksUp = CountryInfoMarkUp(list[0]);
     countryInfoEl.insertAdjacentHTML('beforeend', listMarksUp);
   } else if (list.length > 1 && list.length <= 10) {
     const listMarksUp = createListItemMarksup(list);
